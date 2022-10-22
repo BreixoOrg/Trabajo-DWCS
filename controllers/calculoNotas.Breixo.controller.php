@@ -12,8 +12,9 @@ if(isset($_POST['Enviar'])){
     //var_dump($data['errores']);
     if(count($data['errores']) == 0){
         $json = json_decode($_POST['textAreaU'], true);
+        $data['json'] = $json;
         $data['resultado'] = calcularMediaSuspensosAprobadosNotaMaxNotaMin($json);
-        var_dump($data['resultado']);
+        var_dump($data['json']);
     }
 }
 

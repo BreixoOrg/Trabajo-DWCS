@@ -14,6 +14,68 @@
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo $data['div_titulo']; ?></h6>                                    
             </div>
+            
+            <!-- RESULTADO -->
+            
+            <?php  if(isset($data['resultado'])){ ?>
+            
+                <!-- TABLA DE NOTAS -->
+                <div class="col-12">
+                    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Módulo</th>
+                                <th>Media</th>
+                                <th>Aprobados</th>
+                                <th>Suspensos</th>
+                                <th>Máximo</th>
+                                <th>Mínimo</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <?php
+                            
+                                foreach ($data['resultado'] as $asignatura => $datos) {
+                                    
+                                    echo '<tr>';
+                                    
+                                    echo '<th class="font-weight-light">'. ucfirst($asignatura).'</th>';
+                                    echo '<th class="font-weight-light">'. number_format($datos['media'],2,',','.').'</th>';
+                                    echo '<th class="font-weight-light">'.$datos['aprobados'].'</th>';
+                                    echo '<th class="font-weight-light">'.$datos['suspensos'].'</th>';
+                                    
+                                    echo '<th class="font-weight-light">'.$datos['max']['alumno'].': '. number_format($datos['max']['nota'], 2, ',', '.').'</th>';
+                                    echo '<th class="font-weight-light">'.$datos['min']['alumno'].': '.number_format($datos['min']['nota'], 2, ',', '.').'</th>';
+                                    
+                                    echo '</tr>';
+                                }
+                            
+                            ?>
+                        </tbody>
+                    </table>
+                    
+                </div>
+                
+                <div class="col-12 col-lg-6">
+                    <div class="alert alert-success">
+                        <ol>
+                            <?php 
+                            
+                                foreach ($data['json'] as $asignatura => $alumnos) {
+                                        
+                                }
+                            
+                            ?>
+                        </ol>
+                    </div>
+                </div>
+                
+                
+            
+            <?php } ?>
+            
             <!-- Card Body -->
             <div class="card-body">
                 <!--<form action="./?sec=formulario" method="post">                   -->
