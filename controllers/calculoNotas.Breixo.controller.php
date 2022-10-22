@@ -6,13 +6,71 @@ $data['titulo'] = "Trabajo-DWCS";
 $data['div_titulo'] = "Cálculo de Notas";
 
 if(isset($_POST['Enviar'])){
-    var_dump($_POST);
+    //var_dump($_POST);
     $data['input'] = sanitizarInput($_POST);
     $data['errores'] = checkForm($_POST);
-    
+    //var_dump($data['errores']);
     if(count($data['errores']) == 0){
+        $json = json_decode($_POST['textAreaU'], true);
+        $data['resultado'] = calcularMediaSuspensosAprobadosNotaMaxNotaMin($json);
+        var_dump($data['resultado']);
+    }
+}
+
+//Para llevar a cabo el ejercicio para saber si un alumno aprueba o no hace la media de las notas que tiene
+function calcularMediaSuspensosAprobadosNotaMaxNotaMin($json){
+    
+    $matriz = [];
+    
+    foreach($json as $asignatura => $alumnos){
+        
+        $matriz[$asignatura] = [];
+        
+        $matriz[$asignatura]['media'] = 0;
+        $matriz[$asignatura]['suspensos'] = 0;
+        $matriz[$asignatura]['aprobados'] = 0;
+        $matriz[$asignatura]['max'] = ['alumno' => "" ,'nota' => -1];
+        $matriz[$asignatura]['min'] = ['alumno' => "" ,'nota' => 11];
+        
+        $sumaMediasClase = 0;
+        
+        foreach ($alumnos as $nombre => $notas) {
+            $mediaAlumno = 0;
+            
+            foreach ($notas as $nota) {
+                $mediaAlumno += $nota;
+            }
+            $mediaAlumno = $mediaAlumno / count($notas);
+            
+            if($mediaAlumno < 5){
+                $matriz[$asignatura]['suspensos']++;
+            }
+            else{
+                $matriz[$asignatura]['aprobados']++;
+            }
+            
+            $sumaMediasClase += $mediaAlumno;
+            
+            if($mediaAlumno > $matriz[$asignatura]['max']['nota']){
+                $matriz[$asignatura]['max']['nota'] = $mediaAlumno;
+                $matriz[$asignatura]['max']['alumno'] = $nombre;
+            }
+            else{
+                
+                if($mediaAlumno < $matriz[$asignatura]['min']['nota']){
+                    $matriz[$asignatura]['min']['nota'] = $mediaAlumno;
+                    $matriz[$asignatura]['min']['alumno'] = $nombre;
+                }
+                
+            }
+            
+        }
+        
+        $matriz[$asignatura]['media'] = $sumaMediasClase / count($alumnos);
         
     }
+    
+    return $matriz;
 }
 
 function sanitizarInput($post){
@@ -34,7 +92,7 @@ function checkForm($post){
         else{
             $err_msg = "";
             
-            foreach ($errores as $asignatura => $clase) {
+            foreach ($json as $asignatura => $clase) {
                 
                 if(empty($asignatura)){
                     $err_msg .= "El nombre de la asignatura no puede estar vacío<br />";
@@ -54,7 +112,7 @@ function checkForm($post){
                         else{
                             foreach ($notas as $nota) {
                                 if(!is_numeric($nota)){
-                                    $err_msg .= "En la asignatura de ".htmlentities($asignatura).", ". ucfirst(htmlentities($alumno)." tiene una nota no numérica<br />");
+                                    $err_msg .= "En la asignatura de ".htmlentities($asignatura).", ". ucfirst(htmlentities($alumno)." tiene una nota NO numérica<br />");
                                 }
                                 else{
                                     if($nota < 0 || $nota > 10){
@@ -66,7 +124,9 @@ function checkForm($post){
                     }
                 }
             }
-            $errores['errores'] = $err_msg;
+            if(!empty($errores['errores'])){
+                $errores['errores'] = $err_msg;
+            }
         }
     }
     

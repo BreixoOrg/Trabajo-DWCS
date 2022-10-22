@@ -20,8 +20,9 @@
                 <form method="post" action="./?sec=calculoNotas.Breixo">
                     <div class="mb-3">
                         <label for="textAreaU">Introduzca su JSON</label>
-                        <textarea class="form-control" id="textAreaU" name="textAreaU" rows="10" placeholder=""></textarea>
+                        <textarea class="form-control" id="textAreaU" name="textAreaU" rows="10" placeholder="<?php echo isset($data['input']['textAreaU']) ? $data['input']['textAreaU'] : '' ?>"></textarea>
                     </div>
+                    <p class="text-danger"><?php echo isset($data['errores']['errores']) ? $data['errores']['errores']: '' ?></p>
                     <div class="mb-3">
                         <input type="submit" value="Enviar" name="Enviar" class="btn btn-primary"/>
                     </div>
