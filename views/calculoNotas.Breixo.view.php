@@ -58,22 +58,131 @@
                     
                 </div>
                 
-                <div class="col-12 col-lg-6">
-                    <div class="alert alert-success">
-                        <ol>
-                            <?php 
-                            
-                                foreach($data['repruebanPasanCurso'] as $nombre => $nota){
-                                    if($nota > 5){}
-                                }
-                            
-                            ?>
-                        </ol>
+                    
+                <div class="col-lg-6 col-12">
+                    <!-- TABLA TODO APROBADO -->
+
+                    <div class="col-lg-6 col-12">
+                        <div class="alert alert-success">
+                            <ol>
+                                <?php 
+
+                                    foreach($data['repruebanPasanCurso'] as $nombre => $asignaturas){
+
+                                        $asignaturasSuspensas = 0;
+                                        foreach ($asignaturas as $nota) {
+
+                                            if($nota < 5){
+                                                $asignaturasSuspensas++;
+                                            }
+
+                                        }
+
+                                        if(!$asignaturasSuspensas != 0){
+                                            echo '<li>'. strtoupper($nombre).'</li>';
+                                        }
+
+                                    }
+
+                                ?>
+                            </ol>
+                        </div>
                     </div>
+
+
+                    <!-- TABLA QUEDA UNA O MAS SUSPENSAS -->
+
+                    <div class="col-lg-6 col-12">
+                        <div class="alert alert-warning">
+                            <ol>
+                                <?php 
+
+                                    foreach($data['repruebanPasanCurso'] as $nombre => $asignaturas){
+
+                                        $asignaturasSuspensas = 0;
+                                        foreach ($asignaturas as $nota) {
+
+                                            if($nota < 5){
+                                                $asignaturasSuspensas++;
+                                            }
+
+                                        }
+
+                                        if($asignaturasSuspensas > 0){
+                                            echo '<li>'. strtoupper($nombre).'</li>';
+                                        }
+
+                                    }
+
+                                ?>
+                            </ol>
+                        </div>
+                    </div>
+
                 </div>
                 
-                
-            
+                <div class="col-lg-6 col-12">
+
+                    <!-- TABLA QUEDA SOLO UNA SUSPENSA -->
+
+                    <div class="col-lg-6 col-12">
+                        <div class="alert alert-info">
+                            <ol>
+                                <?php 
+
+                                    foreach($data['repruebanPasanCurso'] as $nombre => $asignaturas){
+
+                                        $asignaturasSuspensas = 0;
+                                        foreach ($asignaturas as $nota) {
+
+                                            if($nota < 5){
+                                                $asignaturasSuspensas++;
+                                            }
+
+                                        }
+
+                                        if($asignaturasSuspensas == 1){
+                                            echo '<li>'. strtoupper($nombre).'</li>';
+                                        }
+
+                                    }
+
+                                ?>
+                            </ol>
+                        </div>
+                    </div>
+
+
+                    <!-- TABLA QUEDAN DOS O MAS SUSPENSAS -->
+
+                    <div class="col-lg-6 col-12">
+                        <div class="alert alert-danger">
+                            <ol>
+                                <?php 
+
+                                    foreach($data['repruebanPasanCurso'] as $nombre => $asignaturas){
+
+                                        $asignaturasSuspensas = 0;
+                                        foreach ($asignaturas as $nota) {
+
+                                            if($nota < 5){
+                                                $asignaturasSuspensas++;
+                                            }
+
+                                        }
+
+                                        if($asignaturasSuspensas >= 2){
+                                            echo '<li>'. strtoupper($nombre).'</li>';
+                                        }
+
+                                    }
+
+                                ?>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                </div>
             <?php } ?>
             
             <!-- Card Body -->
