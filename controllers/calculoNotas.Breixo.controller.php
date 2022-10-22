@@ -6,16 +6,46 @@ $data['titulo'] = "Trabajo-DWCS";
 $data['div_titulo'] = "Cálculo de Notas";
 
 if(isset($_POST['Enviar'])){
-    //var_dump($_POST);
+    
     $data['input'] = sanitizarInput($_POST);
     $data['errores'] = checkForm($_POST);
-    //var_dump($data['errores']);
+    
     if(count($data['errores']) == 0){
         $json = json_decode($_POST['textAreaU'], true);
-        $data['json'] = $json;
-        $data['resultado'] = calcularMediaSuspensosAprobadosNotaMaxNotaMin($json);
-        var_dump($data['json']);
+        $data['repruebanPasanCurso'] = repruebanPasanCurso($json);
+        $data['tablaMedias'] = calcularMediaSuspensosAprobadosNotaMaxNotaMin($json);
+        var_dump($data['repruebanPasanCurso']);
     }
+}
+
+//Devuelve un array con cada alumno y sus notas en las asignaturas que cursa
+function repruebanPasanCurso($json){
+    
+    $matriz = [];
+    
+    foreach($json as $asignatura => $alumnos){
+        
+        foreach ($alumnos as $nombre => $notas) {
+            
+            $notaMediaPorAsignatura = 0;
+            
+            foreach ($notas as $nota) {
+                $notaMediaPorAsignatura += $nota;
+            }
+            $notaMediaPorAsignatura = $notaMediaPorAsignatura / count($notas);
+            
+            if(!key_exists($nombre, $matriz)){
+                $matriz[$nombre] = array();
+            }
+            
+            $matriz[$nombre] += [$asignatura => $notaMediaPorAsignatura];
+            
+        }
+        
+    }
+    
+    return $matriz;
+    
 }
 
 //Para llevar a cabo el ejercicio para saber si un alumno aprueba o no hace la media de las notas que tiene

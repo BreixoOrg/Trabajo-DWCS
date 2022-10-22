@@ -17,7 +17,7 @@
             
             <!-- RESULTADO -->
             
-            <?php  if(isset($data['resultado'])){ ?>
+            <?php  if(isset($data['tablaMedias'])){ ?>
             
                 <!-- TABLA DE NOTAS -->
                 <div class="col-12">
@@ -37,7 +37,7 @@
                         <tbody>
                             <?php
                             
-                                foreach ($data['resultado'] as $asignatura => $datos) {
+                                foreach ($data['tablaMedias'] as $asignatura => $datos) {
                                     
                                     echo '<tr>';
                                     
@@ -63,8 +63,8 @@
                         <ol>
                             <?php 
                             
-                                foreach ($data['json'] as $asignatura => $alumnos) {
-                                        
+                                foreach($data['repruebanPasanCurso'] as $nombre => $nota){
+                                    if($nota > 5){}
                                 }
                             
                             ?>
