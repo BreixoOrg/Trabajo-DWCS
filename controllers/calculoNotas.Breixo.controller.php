@@ -2,8 +2,8 @@
 
 $data = [];
 
-$data['titulo'] = "Trabajo-DWCS";
-$data['div_titulo'] = "Cálculo de Notas";
+$data['titulo'] = "Trabajo-DWCS Cálculo de Notas";
+$data['div_titulo'] = "RESULTADO";
 
 if(isset($_POST['Enviar'])){
     
@@ -14,7 +14,6 @@ if(isset($_POST['Enviar'])){
         $json = json_decode($_POST['textAreaU'], true);
         $data['repruebanPasanCurso'] = repruebanPasanCurso($json);
         $data['tablaMedias'] = calcularMediaSuspensosAprobadosNotaMaxNotaMin($json);
-        var_dump($data['repruebanPasanCurso']);
     }
 }
 
