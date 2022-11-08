@@ -157,7 +157,7 @@ function checkForm($post){
                 }
             }
             
-            if(empty($errores['errores']) && $err_msg != ""){
+            if($err_msg != ""){
                 $errores['errores'] = $err_msg;
             }
         }
