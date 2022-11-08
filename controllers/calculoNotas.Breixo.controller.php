@@ -123,38 +123,41 @@ function checkForm($post){
             $err_msg = "";
             
             foreach ($json as $asignatura => $clase) {
-                
+                //var_dump($json);die();
                 if(empty($asignatura)){
                     $err_msg .= "El nombre de la asignatura no puede estar vacío<br />";
                 }
                 
-                if(!is_array($clase)){
-                    $err_msg .= "El módulo '".htmlentities($clase)."' no tiene un array de alumnos<br />"; 
-                }
-                else{
+                if(is_array($clase)){
+                    
                     foreach($clase as $alumno => $notas){
                         if(empty($alumno)){
                             $err_msg .= "El nombre de un alumno/a no puede estar vacío<br />";
                         }
-                        if(!is_array($notas)){
-                            $err_msg .= "El/La alumno/a ".htmlentities($alumno)." no tiene un array de notas asociado<br />"; 
-                        }
-                        else{
+                        
+                        if(is_array($notas)){
                             foreach ($notas as $nota) {
-                                if(!is_numeric($nota)){
-                                    $err_msg .= "En la asignatura de ".htmlentities($asignatura).", ". ucfirst(htmlentities($alumno)." tiene una nota NO numérica<br />");
-                                }
-                                else{
+                                if(is_int($nota) || is_double($nota)){
                                     if($nota < 0 || $nota > 10){
                                         $err_msg .= "En la asignatura de ".htmlentities($asignatura).", ". ucfirst(htmlentities($alumno)." tiene una nota superior a 10 o inferior a 0<br />");
                                     }
                                 }
+                                else{
+                                    $err_msg .= "En la asignatura de ".htmlentities($asignatura).", ". ucfirst(htmlentities($alumno)." tiene una nota NO numérica<br />");
+                                }
                             }
+                        }
+                        else{
+                            $err_msg .= "El/La alumno/a ".htmlentities($alumno)." no tiene un array de notas asociado<br />";
                         }
                     }
                 }
+                else{
+                    $err_msg .= "El módulo ".htmlentities($asignatura)." no tiene un array de alumnos<br />";
+                }
             }
-            if(!empty($errores['errores'])){
+            
+            if(empty($errores['errores']) && $err_msg != ""){
                 $errores['errores'] = $err_msg;
             }
         }
